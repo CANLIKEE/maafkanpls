@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maafin Aku Ya?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffe6e6; /* Warna pink pastel */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-size: 24px;
+            margin-bottom: 20px;
+            min-height: 70px;
+        }
+
+        .media-container img {
+            max-width: 200px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: none; /* Disembunyikan di awal */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #btn-yes {
+            background-color: #ff4d4d;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+        }
+
+        #btn-yes:hover {
+            background-color: #ff3333;
+            transform: scale(1.05);
+        }
+
+        #btn-no {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        #btn-no:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Styling untuk tombol WhatsApp */
+        #btn-wa {
+            display: none; /* Disembunyikan di awal */
+            background-color: #25D366; /* Warna hijau khas WhatsApp */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        #btn-wa:hover {
+            background-color: #128C7E;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-container">
+        <h1 id="pesan">haiiiii, aku mau minta maaf yaa atas tadi, aku bener bener gatau klo km ngerasa gitu, so sorry... dimaafin ga yaa</h1>
+        
+        <div class="media-container">
+            <img id="foto-dia" src="./foto-dia.jpeg" alt="Foto Dia">
+            <img id="gif-senang" src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif" alt="Happy GIF">
+        </div>
+
+        <div class="buttons" id="btn-group">
+            <button id="btn-yes" onclick="terimaMaaf()">y, dimaafin</button>
+            <button id="btn-no" onclick="tolakMaaf()">gk</button>
+        </div>
+
+        <a href="https://wa.me/628XXXXXXXXXX?text=y%20dimaapinnn%20hehehe" id="btn-wa" target="_blank">kiw chat sini aja sung</a>
+    </div>
+
+    <audio id="lagu" src="./lagu.mp3"></audio>
+
+    <script>
+        const pesan = document.getElementById("pesan");
+        const btnNo = document.getElementById("btn-no");
+        const btnYes = document.getElementById("btn-yes");
+        const fotoDia = document.getElementById("foto-dia");
+        const gifSenang = document.getElementById("gif-senang");
+        const btnGroup = document.getElementById("btn-group");
+        const btnWa = document.getElementById("btn-wa");
+        const lagu = document.getElementById("lagu");
+
+        // Daftar kalimat bujukan saat dia klik 'No'
+        const kalimatBujukan = [
+            "please maapin yaa hehe ak maw ngobrol",
+            "mbg gweh maapin yaa, pwis pwis pwis ",
+            "klo kita tidak ngobrol bisa bisa langit jatoh dunia runtuh",
+            "PLIS MAAFIN AKU YAA CANTIK HEHEHEH INI DIA SI CANTIK", // Index 3: Foto muncul
+            "ih masih ga dimaafin, yauda aku ilangin tombolnya" // Index 4: Tombol NO hilang
+        ];
+
+        let noCount = 0;
+
+        function tolakMaaf() {
+            if (noCount < kalimatBujukan.length) {
+                // Ubah teks sesuai urutan array
+                pesan.innerText = kalimatBujukan[noCount];
+                
+                // Munculkan foto di klik ke-4 (index 3 dari array)
+                if (noCount === 3) { 
+                    fotoDia.style.display = "block";
+                }
+
+                // Sembunyikan tombol NO setelah foto muncul dan dia masih klik NO (index 4)
+                if (noCount === 4) {
+                    btnNo.style.display = "none";
+                }
+
+                noCount++;
+
+                // Bikin tombol YES makin membesar setiap kali NO diklik
+                let currentFontSize = window.getComputedStyle(btnYes).getPropertyValue('font-size');
+                let newSize = parseFloat(currentFontSize) * 1.2; 
+                btnYes.style.fontSize = newSize + 'px';
+                btnYes.style.padding = (parseFloat(currentFontSize) * 0.8) + 'px ' + (parseFloat(currentFontSize) * 1.5) + 'px';
+
+            }
+        }
+
+        function terimaMaaf() {
+            // Ubah tampilan saat dimaafkan
+            pesan.innerText = "YEYYY! MAKASIH BANYAAAK SUDAA DIMAAPINN HEHEHEHEHEE 🎉💖";
+            fotoDia.style.display = "none";
+            gifSenang.style.display = "block"; // Munculkan GIF perayaan
+            btnGroup.style.display = "none"; // Sembunyikan semua tombol
+            
+            // Munculkan tombol WhatsApp
+            btnWa.style.display = "inline-block";
+
+            // Putar lagu perayaan
+            lagu.play();
+        }
+    </script>
+</body>
+</html>
